@@ -1,2 +1,2 @@
 # psicmi.github.io
-pages for psicmi
+pages for psicmi.party
