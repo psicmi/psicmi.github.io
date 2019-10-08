@@ -1,2 +1,3 @@
-# psicmi.github.io
-pages for psicmi.party
+# psicmi.party
+
+Deal !
