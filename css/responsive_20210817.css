@@ -1,0 +1,159 @@
+/*pad*/
+img {
+    max-width: 100%;
+}
+
+.toe {
+    /*超出省略号*/
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button {
+    -webkit-appearance: none;
+    /*去掉苹果的默认UI来渲染按钮*/
+}
+
+
+body {
+    min-width: 320px;
+}
+
+@media screen and (max-width: 1100px) {}
+
+
+@media screen and (max-width: 768px) {
+
+    .main .wrapper {
+        width: auto;
+        padding: 0 0;
+    }
+
+    .wrapper {
+        width: auto !important;
+        padding: 0 0;
+    }
+
+    .header {
+        height: 100px;
+        position: relative;
+        z-index: 100;
+        border-bottom: 2px solid #00599a;
+    }
+
+    .header .wrapper {
+        position: relative;
+        height: 100px;
+        border: none;
+    }
+
+
+    .naver {
+        width: 100%;
+        margin: 0 auto;
+        height: auto;
+        line-height: 40px;
+        background: #fff;
+        color: #000;
+        position: relative;
+        z-index: 10;
+
+        height: 40px;
+        white-space: nowrap;
+        overflow: hidden;
+        overflow-x: scroll;
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        -webkit-overflow-scrolling: touch;
+        text-align: justify;
+    }
+
+    .naver .wrapper {
+        border: none;
+    }
+
+    .news-details .news-title {
+        border-bottom: 1px solid #99cdff;
+        padding-bottom: 5px;
+        margin-bottom: 40px;
+        padding-top: 20px;
+    }
+
+    .news-details .news-title h1 {
+        font-size: 32px;
+        color: #000;
+        text-align: center;
+        margin: 0 0 15px;
+        padding: 0 20px;
+    }
+
+    .news-details .news-title .time span {
+        display: block;
+        text-align: center;
+        width: 100%;
+        line-height: 30px;
+    }
+
+    .news-details .news-title .time {
+        font-size: 16px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .subdoctitle {
+        margin: 0 20px;
+    }
+
+    .news-details .news-title .action {
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .news-details .news-title .action .fonts,
+    .news-details .news-title .action .print,
+
+
+    .news-details .news-title .action .fonts i {
+        margin: 0 5px;
+    }
+
+
+    .news-details strong {
+        font-weight: bold;
+    }
+
+    .news-details b {
+        font-weight: bold;
+    }
+
+    .news-details em {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    .news-details .news-main {
+        padding-bottom: 20px;
+        margin-bottom: 0;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+
+}
+
+@media screen and (max-width: 768px) {}
+
+@media screen and (max-width: 641px) {}
+
+@media screen and (max-width: 592px) {}
+
+@media screen and (max-width: 480px) {}
+
+@media screen and (max-width: 450px) {}

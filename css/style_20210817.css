@@ -1,0 +1,444 @@
+/*@charset "gb2312";*/
+html {
+    -webkit-text-size-adjust: none;
+    /*解决chrome浏览器下字体不能小于12px*/
+}
+
+body {
+    color: #333;
+}
+
+* {}
+
+a {
+    outline: none;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+html {
+    zoom: 1;
+}
+
+html * {
+    outline: 0;
+    zoom: 1;
+}
+
+html button::-moz-focus-inner {
+    border-color: transparent !important;
+}
+
+body {
+    overflow-x: hidden;
+    font-size: 12px;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-family: '微软雅黑';
+}
+
+fieldset,
+a img {
+    border: 0;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+th,
+var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+li {
+    list-style: none;
+}
+
+caption,
+th {
+    text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+q:before,
+q:after {
+    content: '';
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button {
+    -webkit-appearance: none;
+    /*去掉苹果的默认UI来渲染按钮*/
+}
+
+em,
+i {
+    font-style: normal;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    display: block;
+}
+
+.clear {
+    clear: both;
+}
+
+/* 清除浮动*/
+.colwrapper {
+    overflow: hidden;
+    zoom: 1
+        /*for ie*/
+    ;
+    margin: 5px auto;
+}
+
+/* 高度自适应 */
+.strong {
+    font-weight: normal;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.center {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.show {
+    display: block;
+    visibility: visible;
+}
+
+.hide {
+    display: none;
+    visibility: hidden;
+}
+
+.block {
+    display: block;
+}
+
+.inline {
+    display: inline;
+}
+
+.transparent {
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    /** Firefox 3.5即将原生支持opacity属性，所以本条属性只在Firefox3以下版本有效 ***/
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+
+.break {
+    word-wrap: break-word;
+    overflow: hidden;
+    /*word-break:break-all;*/
+}
+
+.tl {
+    text-align: left;
+}
+
+.tc {
+    text-align: center;
+}
+
+.tr {
+    text-align: right;
+}
+
+.bc {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fl {
+    float: left;
+    display: inline;
+}
+
+.fr {
+    float: right;
+    display: inline;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+*html .clearfix {
+    height: 1%
+}
+
+. Clearfix {
+    display: block;
+}
+
+.vm {
+    vertical-align: center;
+}
+
+.pr {
+    position: relative;
+}
+
+.pa {
+    position: absolute;
+}
+
+.abs-right {
+    position: absolute;
+    right: 0;
+}
+
+.zoom {
+    zoom: 1
+}
+
+.block {
+    display: block;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.none {
+    display: none;
+}
+
+*html {
+    background-image: url(about:blank);
+    background-attachment: fixed;
+}
+
+.re {
+    position: relative;
+}
+
+body {
+    font-family: "微软雅黑", arial, Helvetica, sans-serif;
+    color: #000;
+    font-size: 14px;
+    background: #fff;
+
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #005ea5;
+}
+
+.lft {
+    float: left;
+}
+
+.rgt {
+    float: right;
+}
+
+/*-------------------公共头&底---------------------*/
+.header {
+    height: 136px;
+    position: relative;
+    z-index: 1;
+}
+
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.header .wrapper {
+    position: relative;
+    height: 133px;
+}
+
+
+/*导航*/
+.naver {
+    width: 100%;
+    margin: 0 auto;
+    height: 48px;
+    line-height: 48px;
+    color: #000;
+    position: relative;
+    z-index: 120;
+}
+
+.naver .wrapper {
+    border-top: 3px solid #005ea5;
+}
+
+
+.main {}
+
+.main .wrapper {
+    background: #fff;
+}
+
+
+.news-details .news-title {
+    border-bottom: 1px solid #99cdff;
+    padding-bottom: 5px;
+    margin-bottom: 50px;
+}
+
+.news-details .news-title h1 {
+    font-size: 36px;
+    color: #000;
+    text-align: center;
+    margin: 0 40px 15px;
+}
+
+.news-details .news-title .time {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.news-details .news-title .action {
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+}
+
+.news-details .news-title .action .fonts,
+.news-details .news-title .action .print,
+.news-details .news-title .share {
+    display: inline-block;
+    margin-right: 20px;
+    color: #666;
+}
+
+.news-details .news-title .action .fonts i {
+    margin: 0 8px;
+}
+
+.news-details strong {
+    font-weight: bold;
+}
+
+.news-details b {
+    font-weight: bold;
+}
+
+.news-details em {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.news-details .news-main {
+    padding-bottom: 40px;
+    margin-bottom: 0;
+    margin-left: 40px;
+    margin-right: 40px;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+.news-details .news-main a {
+    color: #000099;
+}
+
+.news-details .news-main p {
+    padding-bottom: 20px;
+}
+
+/*网站底*/
+.footer .wrapper {
+    border-top: 4px solid #1056bd;
+    background: #fff;
+    font-size: 14px;
+    padding: 0 0 26px 0;
+    padding-top: 20px;
+    text-align: center;
+    line-height: 28px;
+    margin-top: 16px;
+}
+
+.subdoctitle {
+    line-height: 32px;
+    font-size: 18px;
+    text-align: center;
+}

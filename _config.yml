@@ -1,0 +1,12 @@
+# Site settings
+title: "Statement of PSICMI"
+description: "A statement of PSICMI."
+author: "psicmi"
+
+# Build settings
+markdown: kramdown
+
+# Statement settings
+statement_title: "Psicmi : Maybe I can make it much better"
+statement_subtitle: "by hello@psicmi.party"
+statement_time: "2022-08-12 13:00"
