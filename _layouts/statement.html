@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=yes">
 
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
+
     <title>{% if site.title %}{{ site.title }}{% endif %}</title>
     <link rel="stylesheet" type="text/css" href="css/style_20210817.css">
     <link rel="stylesheet" type="text/css" href="css/responsive_20210817.css">
@@ -62,20 +64,18 @@
     <!--footer-->
     <div class="footer">
         <div class="wrapper clearfix">
-            {% if site.author %}
-            <p><span>{{ site.author }}</span></p>
-            {% endif %}
+            
+            <p>
+                {% if site.author %}
+                <span><a href="http://github.com/{{ site.author }}" target="_blank">{{ site.author }}</a></span>
+                {% endif %} 
+            </p>
+            
         </div>
     </div>
     
    
     <!--footer end-->
-
-    <script type="text/javascript">
-        var repTitle = $(".news-details .news-title h1").html();
-        $(".news-details .news-title h1").html(repTitle.replace(/&lt;br&gt;/g, "<br>"));
-        $("title").html($("title").html().replace(/&lt;br&gt;/g, ""));
-    </script>
 
 </body>
 
