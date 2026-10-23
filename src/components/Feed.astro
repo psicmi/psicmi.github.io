@@ -1,0 +1,24 @@
+---
+import type { Post } from '../lib/content';
+import MessageCard from './MessageCard.astro';
+import Pagination from './Pagination.astro';
+
+interface Props {
+  posts: Post[];
+  current: number;
+  total: number;
+}
+
+const { posts, current, total } = Astro.props;
+---
+
+<section class="feed" aria-label="日志列表">
+  {posts.map((post) => <MessageCard post={post} />)}
+</section>
+<Pagination current={current} total={total} />
+
+<style>
+  .feed {
+    background: var(--color-surface);
+  }
+</style>

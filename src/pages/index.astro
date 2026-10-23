@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Feed from '../components/Feed.astro';
+import { getPosts, PAGE_SIZE } from '../lib/content';
+
+const posts = await getPosts();
+const total = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+const pagePosts = posts.slice(0, PAGE_SIZE);
+---
+
+<BaseLayout>
+  <SiteHeader />
+  <main>
+    <Feed posts={pagePosts} current={1} total={total} />
+  </main>
+  <SiteFooter />
+</BaseLayout>

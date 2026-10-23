@@ -1,0 +1,16 @@
+{
+  "name": "psicmi",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build && node scripts/protect.mjs",
+    "build:mirror": "MIRROR=1 SITE_URL=https://psicmi.github.io ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check"
+  },
+  "dependencies": {
+    "astro": "^7.4.2"
+  }
+}

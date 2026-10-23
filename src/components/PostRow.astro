@@ -1,0 +1,52 @@
+---
+import type { Post } from '../lib/content';
+import { dateParts, postPath } from '../lib/content';
+
+interface Props {
+  post: Post;
+  dateFormat?: 'monthDay' | 'date';
+}
+
+const { post, dateFormat = 'monthDay' } = Astro.props;
+const parts = dateParts(post.data.date);
+---
+
+<a class="post-row" href={postPath(post)}>
+  <time class="post-row-date" datetime={parts.date}>
+    {dateFormat === 'date' ? parts.date : parts.monthDay}
+  </time>
+  <span class="post-row-title">{post.data.title}</span>
+</a>
+
+<style>
+  .post-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px var(--content-padding);
+    color: var(--color-text);
+  }
+
+  .post-row:hover {
+    background: var(--color-quote-bg);
+    text-decoration: none;
+  }
+
+  .post-row-date {
+    flex: none;
+    width: 44px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .post-row-title {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.6;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

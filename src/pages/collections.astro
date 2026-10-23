@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import CollectionCover from '../components/CollectionCover.astro';
+import { collectionPath, collectionsWithCount, dateParts } from '../lib/content';
+
+const items = (await collectionsWithCount()).filter((item) => item.count > 0);
+---
+
+<BaseLayout title="合集" description="按主题整理的文章合集">
+  <SiteHeader />
+  <main class="collections-page">
+    <header class="page-head">
+      <h1>合集</h1>
+      <p>按主题整理的文章集合，共 {items.length} 个。</p>
+    </header>
+
+    <ul class="collection-list">
+      {items.map((item) => (
+        <li>
+          <a class="collection-item" href={collectionPath(item.slug)}>
+            <CollectionCover title={item.title} slug={item.slug} />
+            <div class="collection-info">
+              <h2>{item.title}</h2>
+              {item.description && <p class="collection-desc">{item.description}</p>}
+              <p class="collection-meta">
+                {item.count} 篇内容
+                {item.latest && <span> · 最近更新 {dateParts(item.latest.data.date).date}</span>}
+              </p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .collections-page {
+    padding-bottom: 32px;
+  }
+
+  .page-head {
+    padding: 22px var(--content-padding) 16px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-head h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .page-head p {
+    margin: 6px 0 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-small);
+    letter-spacing: 0;
+  }
+
+  .collection-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection-list li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .collection-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px var(--content-padding);
+    color: var(--color-text);
+  }
+
+  .collection-item:hover {
+    background: var(--color-quote-bg);
+    text-decoration: none;
+  }
+
+  .collection-info {
+    min-width: 0;
+  }
+
+  .collection-info h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .collection-desc {
+    display: -webkit-box;
+    margin: 4px 0 0;
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+    line-height: 1.5;
+    letter-spacing: 0;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .collection-meta {
+    margin: 4px 0 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+</style>

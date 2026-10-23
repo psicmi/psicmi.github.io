@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import PostRow from '../../components/PostRow.astro';
+import { allTags, getPosts, tagPath, type Post } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const tags = await allTags();
+  const posts = await getPosts();
+
+  return tags.map((tag) => ({
+    params: { slug: tag.slug },
+    props: {
+      tag,
+      posts: posts.filter((post) => post.data.tags.includes(tag.slug)),
+    },
+  }));
+}
+
+interface Props {
+  tag: { slug: string; count: number };
+  posts: Post[];
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`标签 · ${tag.slug}`}
+  description={`${tag.slug} 标签下的 ${posts.length} 篇文章`}
+  canonicalPath={tagPath(tag.slug)}
+>
+  <SiteHeader />
+  <main class="tag-page">
+    <header class="page-head">
+      <h1>#{tag.slug}</h1>
+      <p>共 {posts.length} 篇文章。</p>
+    </header>
+
+    <div class="tag-posts">
+      {posts.map((post) => <PostRow post={post} dateFormat="date" />)}
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .tag-page {
+    padding-bottom: 32px;
+  }
+
+  .page-head {
+    padding: 22px var(--content-padding) 16px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-head h1 {
+    margin: 0;
+    color: var(--color-link);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .page-head p {
+    margin: 6px 0 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-small);
+    letter-spacing: 0;
+  }
+
+  .tag-posts {
+    padding-bottom: 8px;
+  }
+</style>

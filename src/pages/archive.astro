@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PostRow from '../components/PostRow.astro';
+import { getPosts, type Post } from '../lib/content';
+
+const posts = await getPosts();
+
+const groups: { year: string; posts: Post[] }[] = [];
+for (const post of posts) {
+  const year = post.data.date.slice(0, 4);
+  let group = groups.find((item) => item.year === year);
+  if (!group) {
+    group = { year, posts: [] };
+    groups.push(group);
+  }
+  group.posts.push(post);
+}
+---
+
+<BaseLayout title="日志" description={`共计 ${posts.length} 篇日志`}>
+  <SiteHeader />
+  <main class="archive-page">
+    <header class="page-head">
+      <h1>日志</h1>
+      <p>共计 {posts.length} 篇日志。</p>
+    </header>
+
+    {groups.map((group) => (
+      <section class="archive-group">
+        <h2 class="archive-year">{group.year}</h2>
+        <div class="archive-list">
+          {group.posts.map((post) => <PostRow post={post} />)}
+        </div>
+      </section>
+    ))}
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .archive-page {
+    padding-bottom: 32px;
+  }
+
+  .page-head {
+    padding: 22px var(--content-padding) 16px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-head h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .page-head p {
+    margin: 6px 0 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-small);
+    letter-spacing: 0;
+  }
+
+  .archive-group {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .archive-group:last-child {
+    border-bottom: 0;
+  }
+
+  .archive-year {
+    margin: 0;
+    padding: 18px var(--content-padding) 6px;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .archive-list {
+    padding-bottom: 8px;
+  }
+</style>

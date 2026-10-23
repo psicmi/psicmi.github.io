@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+import { SITE, SITE_NAME, SITE_DESCRIPTION, IS_MIRROR } from '../consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** 页面在站内的路径，用于 canonical，例如 /archives/139.html */
+  canonicalPath?: string;
+  noindex?: boolean;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
+  bodyClass = '',
+} = Astro.props;
+
+// 无论主站还是镜像，canonical 都指向主站，避免镜像被搜索引擎当作重复内容
+const MAIN_SITE = 'https://psicmi.cc';
+const canonicalUrl = new URL(canonicalPath, MAIN_SITE);
+if (canonicalUrl.pathname === '/index.html') canonicalUrl.pathname = '/';
+const canonical = canonicalUrl.href;
+const pageTitle = title ? `${title} - ${SITE_NAME}` : SITE_NAME;
+const isNoindex = noindex || IS_MIRROR;
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="auto">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {isNoindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="alternate" type="application/rss+xml" title={SITE_NAME} href="/feed/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body class={bodyClass}>
+    <div class="app-shell">
+      <slot />
+    </div>
+    <span class="visually-hidden" data-build-site={SITE}></span>
+  </body>
+</html>

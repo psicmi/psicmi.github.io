@@ -1,0 +1,256 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import CollectionCard from '../../components/CollectionCard.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
+import PostNav from '../../components/PostNav.astro';
+import { IS_MIRROR, SITE_NAME } from '../../consts';
+import {
+  collectionPath,
+  collectionsWithCount,
+  dateParts,
+  getPosts,
+  postCollections,
+  postPath,
+  tagPath,
+  type Post,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const visible = IS_MIRROR ? posts.filter((post) => !post.data.hidden) : posts;
+
+  return visible.map((post) => ({
+    params: { id: String(post.data.legacyId) },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const parts = dateParts(post.data.date);
+const meta = postCollections(post);
+
+const counts = await collectionsWithCount();
+const collectionCards = meta.map((item) => ({
+  ...item,
+  count: counts.find((entry) => entry.slug === item.slug)?.count ?? 0,
+}));
+
+const all = await getPosts();
+const position = all.findIndex((item) => item.id === post.id);
+const newer = position > 0 ? all[position - 1] : null;
+const older = position >= 0 && position < all.length - 1 ? all[position + 1] : null;
+
+const related = meta.length
+  ? all
+      .filter(
+        (item) =>
+          item.id !== post.id &&
+          item.data.collections.some((slug) => post.data.collections.includes(slug)),
+      )
+      .slice(0, 3)
+  : [];
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.summary}
+  canonicalPath={postPath(post)}
+  noindex={post.data.hidden}
+>
+  <SiteHeader />
+  <main class="article-page">
+    <header class="article-head">
+      <h1 class="article-title">{post.data.title}</h1>
+      <div class="article-meta">
+        <span>{SITE_NAME}</span>
+        <time datetime={parts.date}>{parts.cn}</time>
+      </div>
+      {collectionCards.length > 0 && (
+        <div class="article-collections">
+          {collectionCards.map((item) => (
+            <a class="collection-chip" href={collectionPath(item.slug)}>合集 · {item.title}</a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <article class="prose">
+      {post.body?.trim() ? (
+        <Content />
+      ) : (
+        <p class="empty-note">本文原先以图片为主，迁移时已按站点策略移除图片，暂无文字内容。</p>
+      )}
+    </article>
+
+    {collectionCards.map((item) => <CollectionCard collection={item} />)}
+
+    {post.data.tags.length > 0 && (
+      <div class="article-tags">
+        {post.data.tags.map((tag) => (
+          <a class="tag-pill" href={tagPath(tag)}>#{tag}</a>
+        ))}
+      </div>
+    )}
+
+    {related.length > 0 && (
+      <section class="related">
+        <h2 class="related-title">相关阅读</h2>
+        <ul class="related-list">
+          {related.map((item) => (
+            <li>
+              <a href={postPath(item)}>
+                <span class="related-link-title">{item.data.title}</span>
+                <span class="related-link-date">{dateParts(item.data.date).date}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <PostNav prev={newer} next={older} />
+    <AuthorCard />
+    <p class="article-copyright">本文作者 {SITE_NAME}，转载请注明出处。</p>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding-top: 22px;
+    padding-bottom: 28px;
+  }
+
+  .article-head {
+    padding: 0 var(--content-padding);
+  }
+
+  .article-page .prose {
+    padding-top: 20px;
+  }
+
+  .article-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+
+  .article-collections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .collection-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #eef2f8;
+    color: var(--color-link);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+
+  .collection-chip:hover {
+    text-decoration: none;
+    background: #e3eaf6;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 22px var(--content-padding) 0;
+  }
+
+  .related {
+    margin: 30px var(--content-padding) 0;
+  }
+
+  .related-title {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .related-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .related-list li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-list a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    color: var(--color-text);
+  }
+
+  .related-list a:hover {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .related-link-title {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.6;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .related-link-date {
+    flex: none;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+
+  .article-copyright {
+    margin: 24px var(--content-padding) 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .empty-note {
+    margin: 0;
+    padding: 18px 16px;
+    border-radius: var(--radius-md);
+    background: var(--color-quote-bg);
+    color: var(--color-text-tertiary);
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: 0;
+    text-align: center;
+  }
+</style>

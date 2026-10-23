@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  size?: 'card' | 'hero';
+}
+
+const { title, slug, size = 'card' } = Astro.props;
+
+const palettes = [
+  ['#dbe7ff', '#b8ccff', '#3c5a99'],
+  ['#ffe8d9', '#ffd1b3', '#9a5b2e'],
+  ['#e3f5e9', '#c6ebd4', '#2f6b46'],
+  ['#f3e6ff', '#e3ccff', '#6b3f99'],
+  ['#e6f4f8', '#c9e7f1', '#2d6373'],
+];
+
+const hash = [...slug].reduce((total, char) => total + char.charCodeAt(0), 0);
+const [from, to, ink] = palettes[hash % palettes.length];
+const style = `--cover-from:${from};--cover-to:${to};--cover-ink:${ink}`;
+---
+
+<span class:list={['collection-cover', size]} style={style} aria-hidden="true">
+  {title.slice(0, 1)}
+</span>
+
+<style>
+  .collection-cover {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--cover-from), var(--cover-to));
+    color: var(--cover-ink);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .collection-cover.card {
+    width: 64px;
+    height: 64px;
+    font-size: 26px;
+  }
+
+  .collection-cover.hero {
+    width: 100%;
+    height: 132px;
+    border-radius: var(--radius-md);
+    font-size: 52px;
+  }
+</style>

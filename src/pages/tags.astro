@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { allTags, tagPath } from '../lib/content';
+
+const tags = await allTags();
+const max = Math.max(...tags.map((tag) => tag.count));
+---
+
+<BaseLayout title="标签" description={`共计 ${tags.length} 个标签`}>
+  <SiteHeader />
+  <main class="tags-page">
+    <header class="page-head">
+      <h1>标签</h1>
+      <p>共计 {tags.length} 个标签。</p>
+    </header>
+
+    <ul class="tag-cloud">
+      {tags.map((tag) => (
+        <li>
+          <a
+            class:list={['tag-item', { large: tag.count >= max * 0.4, medium: tag.count >= max * 0.2 && tag.count < max * 0.4 }]}
+            href={tagPath(tag.slug)}
+          >
+            #{tag.slug}
+            <span class="tag-count">{tag.count}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .tags-page {
+    padding-bottom: 40px;
+  }
+
+  .page-head {
+    padding: 22px var(--content-padding) 16px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-head h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .page-head p {
+    margin: 6px 0 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-small);
+    letter-spacing: 0;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 20px var(--content-padding);
+    list-style: none;
+  }
+
+  .tag-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--color-quote-bg);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+    letter-spacing: 0;
+  }
+
+  .tag-item.medium {
+    font-size: 14px;
+  }
+
+  .tag-item.large {
+    color: var(--color-link);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .tag-item:hover {
+    text-decoration: none;
+    background: var(--color-border);
+  }
+
+  .tag-count {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+  }
+</style>

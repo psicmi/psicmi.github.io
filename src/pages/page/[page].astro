@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Feed from '../../components/Feed.astro';
+import { getPosts, PAGE_SIZE, type Post } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const total = Math.ceil(posts.length / PAGE_SIZE);
+
+  return Array.from({ length: Math.max(0, total - 1) }, (_, index) => {
+    const current = index + 2;
+    return {
+      params: { page: String(current) },
+      props: {
+        posts: posts.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE),
+        current,
+        total,
+      },
+    };
+  });
+}
+
+interface Props {
+  posts: Post[];
+  current: number;
+  total: number;
+}
+
+const { posts, current, total } = Astro.props;
+---
+
+<BaseLayout title={`第 ${current} 页`} canonicalPath={`/page/${current}/`}>
+  <SiteHeader />
+  <main>
+    <Feed posts={posts} current={current} total={total} />
+  </main>
+  <SiteFooter />
+</BaseLayout>

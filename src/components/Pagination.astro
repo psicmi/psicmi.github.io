@@ -1,0 +1,59 @@
+---
+interface Props {
+  current: number;
+  total: number;
+}
+
+const { current, total } = Astro.props;
+const href = (page: number) => (page === 1 ? '/' : `/page/${page}.html`);
+---
+
+<nav class="pagination" aria-label="分页">
+  {current > 1 ? (
+    <a class="page-link" href={href(current - 1)}>上一页</a>
+  ) : (
+    <span class="page-link disabled">上一页</span>
+  )}
+  <span class="page-indicator">第 {current} / {total} 页</span>
+  {current < total ? (
+    <a class="page-link" href={href(current + 1)}>下一页</a>
+  ) : (
+    <span class="page-link disabled">下一页</span>
+  )}
+</nav>
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px var(--content-padding) 32px;
+    border-top: 1px solid var(--color-border);
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .page-link {
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: var(--color-quote-bg);
+    color: var(--color-link);
+    white-space: nowrap;
+  }
+
+  .page-link:hover {
+    text-decoration: none;
+    background: var(--color-border);
+  }
+
+  .page-link.disabled {
+    color: var(--color-text-tertiary);
+    background: transparent;
+  }
+
+  .page-indicator {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+  }
+</style>

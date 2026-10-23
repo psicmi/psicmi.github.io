@@ -1,0 +1,44 @@
+---
+import { SITE_NAME } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="/feed/" target="_blank" rel="noopener">RSS</a>
+    <span class="dot">·</span>
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">津ICP备17007601号</a>
+  </div>
+  <p class="copyright">© {year} {SITE_NAME}</p>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 28px var(--content-padding) 36px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+    text-align: center;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-links a {
+    color: var(--color-text-tertiary);
+  }
+
+  .footer-links a:hover {
+    color: var(--color-link);
+  }
+
+  .copyright {
+    margin: 8px 0 0;
+  }
+</style>

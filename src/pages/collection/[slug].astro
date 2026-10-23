@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import CollectionCover from '../../components/CollectionCover.astro';
+import {
+  collectionPath,
+  collectionsWithCount,
+  dateParts,
+  getPosts,
+  postPath,
+  type CollectionMeta,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+  const items = (await collectionsWithCount()).filter((item) => item.count > 0);
+
+  return items.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+interface Props {
+  item: CollectionMeta & { count: number; latest?: { data: { date: string } } };
+}
+
+const { item } = Astro.props;
+const posts = (await getPosts()).filter((post) => post.data.collections.includes(item.slug));
+const latest = posts[0];
+---
+
+<BaseLayout
+  title={`合集 · ${item.title}`}
+  description={item.description || `${item.title} 合集`}
+  canonicalPath={collectionPath(item.slug)}
+>
+  <SiteHeader />
+  <main class="collection-page">
+    <header class="collection-head">
+      <CollectionCover title={item.title} slug={item.slug} size="hero" />
+      <h1 class="collection-name">{item.title}</h1>
+      {item.description && <p class="collection-description">{item.description}</p>}
+      <p class="collection-meta">
+        共 {item.count} 篇内容
+        {latest && <span> · 最近更新 {dateParts(latest.data.date).date}</span>}
+      </p>
+    </header>
+
+    <ul class="collection-posts">
+      {posts.map((post) => (
+        <li>
+          <a class="collection-post" href={postPath(post)}>
+            <span class="collection-post-title">{post.data.title}</span>
+            <time class="collection-post-date" datetime={dateParts(post.data.date).date}>
+              {dateParts(post.data.date).date}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .collection-page {
+    padding-bottom: 32px;
+  }
+
+  .collection-head {
+    padding: 20px var(--content-padding) 18px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .collection-name {
+    margin: 16px 0 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .collection-description {
+    margin: 6px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+
+  .collection-meta {
+    margin: 8px 0 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+
+  .collection-posts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection-posts li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .collection-post {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px var(--content-padding);
+    color: var(--color-text);
+  }
+
+  .collection-post:hover {
+    background: var(--color-quote-bg);
+    text-decoration: none;
+  }
+
+  .collection-post-title {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.6;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .collection-post-date {
+    flex: none;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+</style>

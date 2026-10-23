@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+_protected/
+.DS_Store
+
+# 宿主注入的 GitHub 凭据/配置，绝不进仓库
+.envrc
+.gh-config/
+.gh-credential-helper
+.gitconfig
+gh-psicmi
+
+# 迁移产出的隐藏文章密码
+.protected.json
+.gate-secret
+typecho.sql

@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import AuthorCard from '../components/AuthorCard.astro';
+import { SITE_NAME } from '../consts';
+import { dateParts, type PageEntry } from '../lib/content';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+
+  return pages.map((page) => ({
+    params: { slug: page.data.slug },
+    props: { page },
+  }));
+}
+
+interface Props {
+  page: PageEntry;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+const parts = dateParts(page.data.date);
+---
+
+<BaseLayout
+  title={page.data.title}
+  description={page.data.summary}
+  canonicalPath={`/${page.data.slug}.html`}
+>
+  <SiteHeader />
+  <main class="static-page">
+    <header class="page-head">
+      <h1>{page.data.title}</h1>
+      <time datetime={parts.date}>{parts.date}</time>
+    </header>
+
+    <article class="prose">
+      <Content />
+    </article>
+
+    <AuthorCard />
+    <p class="page-copyright">本文作者 {SITE_NAME}，转载请注明出处。</p>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .static-page {
+    padding-top: 22px;
+    padding-bottom: 28px;
+  }
+
+  .page-head {
+    padding: 0 var(--content-padding) 18px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-head h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+  }
+
+  .page-head time {
+    display: block;
+    margin-top: 8px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+
+  .static-page .prose {
+    padding-top: 20px;
+  }
+
+  .page-copyright {
+    margin: 24px var(--content-padding) 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+    text-align: center;
+  }
+</style>

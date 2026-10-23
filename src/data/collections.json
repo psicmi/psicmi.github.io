@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "default",
+    "title": "默认分类",
+    "description": "只是一个默认分类",
+    "order": 1
+  },
+  {
+    "slug": "life",
+    "title": "诗和远方",
+    "description": "诗和远方",
+    "order": 2
+  },
+  {
+    "slug": "1024",
+    "title": "1024",
+    "description": "1024",
+    "order": 3
+  },
+  {
+    "slug": "others",
+    "title": "圈外",
+    "description": "圈外",
+    "order": 4
+  }
+]

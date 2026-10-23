@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<BaseLayout title="页面不存在" noindex>
+  <SiteHeader />
+  <main class="not-found">
+    <p class="code">404</p>
+    <p class="hint">页面不存在，或者它已被隐藏。</p>
+    <a class="back" href="/">返回首页</a>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding: 96px var(--content-padding) 120px;
+    text-align: center;
+  }
+
+  .code {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+
+  .hint {
+    margin: 20px 0 28px;
+    color: var(--color-text-secondary);
+    font-size: 15px;
+  }
+
+  .back {
+    display: inline-block;
+    padding: 8px 22px;
+    border-radius: 999px;
+    background: var(--color-quote-bg);
+    font-size: 14px;
+  }
+</style>

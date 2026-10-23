@@ -1,0 +1,87 @@
+---
+import type { Post } from '../lib/content';
+import { postPath, dateParts } from '../lib/content';
+
+interface Props {
+  prev?: Post | null;
+  next?: Post | null;
+}
+
+const { prev = null, next = null } = Astro.props;
+---
+
+{(prev || next) && (
+  <nav class="post-nav" aria-label="上一篇与下一篇">
+    {prev && (
+      <a class="post-nav-item" href={postPath(prev)}>
+        <span class="post-nav-label">上一篇</span>
+        <span class="post-nav-title">{prev.data.title}</span>
+        <span class="post-nav-date">{dateParts(prev.data.date).date}</span>
+      </a>
+    )}
+    {next && (
+      <a class="post-nav-item next" href={postPath(next)}>
+        <span class="post-nav-label">下一篇</span>
+        <span class="post-nav-title">{next.data.title}</span>
+        <span class="post-nav-date">{dateParts(next.data.date).date}</span>
+      </a>
+    )}
+  </nav>
+)}
+
+<style>
+  .post-nav {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 28px var(--content-padding) 0;
+  }
+
+  @media (min-width: 560px) {
+    .post-nav {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .post-nav-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+  }
+
+  .post-nav-item:hover {
+    text-decoration: none;
+    border-color: var(--color-border-strong);
+  }
+
+  .post-nav-item.next {
+    text-align: right;
+  }
+
+  .post-nav-label {
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+
+  .post-nav-title {
+    margin-top: 4px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .post-nav-date {
+    margin-top: 4px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    letter-spacing: 0;
+  }
+</style>
