@@ -123,10 +123,7 @@ DirectoryIndex index.html
   RewriteEngine On
   RewriteBase /
 
-  # 只对正式域名强制 HTTPS，避免本地预览被跳转
-  RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP_HOST} ^psicmi\\.cc$ [NC]
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # HTTPS 由虚拟主机的 nginx 终止，Apache 侧不再跳转，避免重定向循环
 
   # 旧分页 /page/2/ -> /page/2.html
   RewriteRule ^page/([0-9]+)/$ /page/$1.html [L,R=301]

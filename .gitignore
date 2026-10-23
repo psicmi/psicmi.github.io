@@ -4,6 +4,7 @@ dist/
 .env
 .env.*
 !.env.example
+!.env.deploy.example
 _protected/
 .DS_Store
 

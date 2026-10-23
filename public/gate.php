@@ -50,13 +50,16 @@ if (!$authorized && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if ($expectedPassword !== '' && hash_equals($expectedPassword, $input)) {
         $exp = (string) (time() + $maxAge);
         $sig = hash_hmac('sha256', $id . '|' . $exp, $secret);
-        setcookie($cookieName, $id . '|' . $exp . '|' . $sig, [
-            'expires' => time() + $maxAge,
-            'path' => '/',
-            'httponly' => true,
-            'samesite' => 'Lax',
-            'secure' => !empty($_SERVER['HTTPS']),
-        ]);
+        $cookieValue = $id . '|' . $exp . '|' . $sig;
+        $expires = gmdate('D, d M Y H:i:s \G\M\T', time() + $maxAge);
+        $secure = !empty($_SERVER['HTTPS']) ? '; Secure' : '';
+        header(
+            'Set-Cookie: ' . $cookieName . '=' . rawurlencode($cookieValue)
+            . '; Expires=' . $expires
+            . '; Max-Age=' . $maxAge
+            . '; Path=/; HttpOnly; SameSite=Lax' . $secure,
+            false
+        );
         header('Location: ' . ($_SERVER['REQUEST_URI'] ?? '/gate.php?id=' . $id), true, 303);
         exit;
     }
