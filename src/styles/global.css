@@ -76,9 +76,18 @@
   box-sizing: border-box;
 }
 
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+/*
+ * 微信 WebView（iOS 与部分 Android 版）会按客户端「字体大小」二次放大网页：
+ * 首屏先按 17px 渲染，稍后再放大一次，看起来就是内容跳一下。
+ * 这里在 html 与 body 上同时锁定为 100% 并加 !important，
+ * 以压过微信注入的 body 级样式；Android 侧另有 BaseLayout 里的
+ * WeixinJSBridge 字号锁定兜底。
+ */
+html,
+body {
+  -webkit-text-size-adjust: 100% !important;
+  -moz-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
 body {

@@ -33,6 +33,30 @@ const isNoindex = noindex || IS_MIRROR;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      // 微信（尤其 Android 版）会把客户端的「字体大小」设置应用到网页：
+      // 页面先按默认字号渲染，随后 WebView 再按用户设置放大，看起来就是内容跳大一下。
+      // 这里在首屏渲染前把 WebView 字号固定为默认值；iOS 侧由 global.css 的
+      // text-size-adjust 兜底。
+      (function () {
+        function lockFontSize() {
+          if (typeof window.WeixinJSBridge === 'undefined') return;
+          window.WeixinJSBridge.invoke('setFontSizeCallback', { fontSize: 0 });
+          window.WeixinJSBridge.on('menu:setfont', function () {
+            window.WeixinJSBridge.invoke('setFontSizeCallback', { fontSize: 0 });
+          });
+        }
+
+        if (
+          typeof window.WeixinJSBridge === 'object' &&
+          typeof window.WeixinJSBridge.invoke === 'function'
+        ) {
+          lockFontSize();
+        } else {
+          document.addEventListener('WeixinJSBridgeReady', lockFontSize, false);
+        }
+      })();
+    </script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
