@@ -79,15 +79,17 @@
 /*
  * 微信 WebView（iOS 与部分 Android 版）会按客户端「字体大小」二次放大网页：
  * 首屏先按 17px 渲染，稍后再放大一次，看起来就是内容跳一下。
- * 这里在 html 与 body 上同时锁定为 100% 并加 !important，
- * 以压过微信注入的 body 级样式；Android 侧另有 BaseLayout 里的
- * WeixinJSBridge 字号锁定兜底。
+ * 这里在 html 与 body 上同时锁定并加 !important，压过微信注入的 body 级样式。
+ *
+ * iOS 微信的旧 WebKit 只认 none（会把 100% 当成 auto 继续缩放），
+ * 因此三个属性统一写 none；none 只禁用字号自动调整，不影响双指缩放。
+ * Android 侧另有 BaseLayout 里的 WeixinJSBridge 字号锁定兜底。
  */
 html,
 body {
-  -webkit-text-size-adjust: 100% !important;
-  -moz-text-size-adjust: 100% !important;
-  text-size-adjust: 100% !important;
+  -webkit-text-size-adjust: none !important;
+  -moz-text-size-adjust: none !important;
+  text-size-adjust: none !important;
 }
 
 body {
